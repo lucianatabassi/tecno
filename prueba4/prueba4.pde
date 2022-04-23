@@ -10,7 +10,7 @@ Trazos t;
 Paleta paleta;
 
 void setup () {
-  size (400, 600);
+  size (500, 700);
   t = new Trazos();
   paleta = new Paleta ("roma1.jpg");
   paleta = new Paleta ("roma2.jpg");
