@@ -8,7 +8,7 @@ class Trazos {
 
   Trazos () {
     i = new Interaccion();
-    cantidad = 10;
+    cantidad = 5;
     ancho = 220;
     alto = 300;
     opacidad = 200;
@@ -19,7 +19,7 @@ class Trazos {
   }
 
   void trazoLargo() {
-    int tancho = 80;
+    int tancho = 100;
     int tlargo = 230;
     for (int i = 0; i < cantTrazosLargos; i++) {
       String nombre = "0" + i + ".png";
@@ -52,7 +52,7 @@ class Trazos {
     //si vas para abajo se usa el color de la segunda paleta
     if (i.abajo && i.movGrande) {
       trazoLargo();
-    } else if (i.arriba && i.movPeq) {
+    } else if (i.abajo && i.movPeq) {
       for (int i = 0; i < cantidad; i++) {
         String nombre = "0" + i + ".png";
         trazos = loadImage ( nombre );

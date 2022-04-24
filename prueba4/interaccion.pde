@@ -31,7 +31,7 @@ class Interaccion {
     tiempoPeq = constrain(tiempoPeq, 0, 90);
 
     if (mouse.velocidad() > 10) {
-      float umbral = 40;
+      float umbral = 50;
       if (mouse.velocidad()>umbral) {
         tiempoGrande+=10;
         tiempoPeq-=10;
@@ -55,7 +55,7 @@ class Interaccion {
     // que pasa con el mouse en este frame//
     boolean seMueveElMouseEnEsteFrame = false;
     float sensibilidad = 5;
-    if (mouse.velocidad()>sensibilidad && mouse.velocidad()<50) {
+    if (mouse.velocidad()>sensibilidad && mouse.velocidad()<200) {
       seMueveElMouseEnEsteFrame = true;
     }
     arriba = false;
