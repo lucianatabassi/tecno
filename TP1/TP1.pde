@@ -7,7 +7,7 @@ boolean monitor = false;
 
 float amortiguacion = 0.9;
 
-float minPitch = 54;
+float minPitch = 55;
 float maxPitch = 96; 
 
 float minAmp = 60;
@@ -47,6 +47,7 @@ void draw () {
   gestorPitch.actualizar(pitch);
   
   boolean haySonido = gestorAmp.filtradoNorm() > 0.2;
+   boolean bajoYagudo = gestorPitch.filtradoNorm() > 0.2;
   
   boolean empezoElSonido = haySonido && !antesHabiaSonido;
   //boolean terminoElSonido = !haySonido && antesHabiaSonido;
@@ -59,7 +60,12 @@ if (empezoElSonido) {
   
   if (haySonido) {
     t.trazosNormalesP1();
-    }
+    //t.trazosNormalesP2();
+   // t.trazosNormalesP3();
+   // t.trazosNormalesP4();
+    } else if (haySonido && bajoYagudo) {
+     t.trazosNormalesP4();
+      }
     
     if ( monitor ) {
     //muestra la señal en pantalla

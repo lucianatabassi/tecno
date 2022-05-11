@@ -31,7 +31,7 @@ class Trazos {
       trazos = loadImage ( nombre );
       trazos.filter ( INVERT );
 
-      tint (paleta.darColorPaletaUno(), opacidad);
+      tint (paleta.darColorPaletaUno());
       image (trazos, random (width), random (height), ancho, alto);
     }
   }
