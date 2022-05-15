@@ -5,9 +5,9 @@ GestorSenial gestorPitch;
 
 boolean monitor = false;
 
-float amortiguacion = 0.9;
+//float amortiguacion = 0.9;
 
-float minPitch = 55;
+float minPitch = 61;
 float maxPitch = 96; 
 
 float minAmp = 60;
@@ -30,8 +30,8 @@ void setup () {
 
   osc = new OscP5(this, 12345);
 
-  gestorAmp = new GestorSenial (minAmp, maxAmp, amortiguacion);
-  gestorPitch = new GestorSenial (minPitch, maxPitch, amortiguacion);
+  gestorAmp = new GestorSenial (minAmp, maxAmp); //min y max de entrada q queremos evaluar
+  gestorPitch = new GestorSenial (minPitch, maxPitch);
 
   t = new Trazos();
   i =  new Interaccion();
@@ -45,52 +45,55 @@ void draw () {
 
   gestorAmp.actualizar(amp);
   gestorPitch.actualizar(pitch);
+
+  //boolean haySonido  =  gestorAmp.filtradoNorm() > 0.2;
   
-  boolean haySonido = gestorAmp.filtradoNorm() > 0.2;
-   boolean bajoYagudo = gestorPitch.filtradoNorm() > 0.2;
-  
-  boolean empezoElSonido = haySonido && !antesHabiaSonido;
+  /*--- aca lo que hice fue limitar el volumen y la altura (los numeros estan normalizados)*/
+  boolean agudoYalto = gestorAmp.filtradoNorm() > 0.4 && gestorPitch.filtradoNorm() > 0.1;
+  boolean bajoYagudo = gestorAmp.filtradoNorm() > 0.1 && gestorAmp.filtradoNorm() < 0.4 && gestorPitch.filtradoNorm() > 0.1;
+  boolean altaYgrave = gestorAmp.filtradoNorm() > 0.4 && gestorPitch.filtradoNorm() < 0.1 ;
+  boolean bajoYgrave = gestorAmp.filtradoNorm() > 0.1 && gestorAmp.filtradoNorm() < 0.3 ;
+
+  //boolean empezoElSonido = haySonido && !antesHabiaSonido;
   //boolean terminoElSonido = !haySonido && antesHabiaSonido;
 
-if (empezoElSonido) {
-  t.dibujar();
-  //t.movimientos();
+  /*  if (empezoElSonido) {
+   t.dibujar();
+   }*/
+
+  /*---sonidos largos para trazos normales--- */
   
-  }
-  
-  if (haySonido) {
+  if (agudoYalto) {
+    t.dibujar();
     t.trazosNormalesP1();
-    //t.trazosNormalesP2();
-   // t.trazosNormalesP3();
-   // t.trazosNormalesP4();
-    } else if (haySonido && bajoYagudo) {
-     t.trazosNormalesP4();
-      }
-    
-    if ( monitor ) {
+  } 
+  if (bajoYgrave) {
+    t.dibujar();
+    t.trazosNormalesP2();
+  } 
+  if (altaYgrave) {
+    t.dibujar();
+    t.trazosNormalesP3();
+  } 
+  if (bajoYagudo) {
+    t.dibujar();
+    t.trazosNormalesP4();
+  } 
+
+
+
+
+
+
+
+
+
+
+  if ( monitor ) {
     //muestra la señal en pantalla
     gestorPitch.imprimir(100, 100 );
-    gestorAmp.imprimir(100, 250 , 500 , 100 ,  false, true);
+    gestorAmp.imprimir(100, 250, 500, 100, false, true);
   }
-
-  //esto era una prueba pero lo dejo por las dudas
-  /*  i.actualizar();
-   
-   if (i.arriba) {
-   println("arriba");
-   }
-   
-   if (i.abajo) {
-   println("abajo");
-   }
-   
-   if (i.derecha) {
-   println("derecha");
-   }
-   
-   if (i.izquierda) {
-   println("izquierda");
-   }*/
 }
 
 void  oscEvent (OscMessage m) {
