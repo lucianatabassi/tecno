@@ -42,49 +42,43 @@ void setup () {
 }
 
 void draw () {
-
   gestorAmp.actualizar(amp);
   gestorPitch.actualizar(pitch);
 
   //boolean haySonido  =  gestorAmp.filtradoNorm() > 0.2;
-  
+
   /*--- aca lo que hice fue limitar el volumen y la altura (los numeros estan normalizados)*/
   boolean agudoYalto = gestorAmp.filtradoNorm() > 0.4 && gestorPitch.filtradoNorm() > 0.1;
   boolean bajoYagudo = gestorAmp.filtradoNorm() > 0.1 && gestorAmp.filtradoNorm() < 0.4 && gestorPitch.filtradoNorm() > 0.1;
   boolean altaYgrave = gestorAmp.filtradoNorm() > 0.4 && gestorPitch.filtradoNorm() < 0.1 ;
   boolean bajoYgrave = gestorAmp.filtradoNorm() > 0.1 && gestorAmp.filtradoNorm() < 0.3 ;
 
-  //boolean empezoElSonido = haySonido && !antesHabiaSonido;
+  
+
+  /*---sonidos largos para trazos normales--- */
+  if (agudoYalto) {
+    t.trazosNormalesP1();
+  } 
+  if (bajoYgrave) {
+    t.trazosNormalesP2();
+  } 
+  if (altaYgrave) {
+    t.trazosNormalesP3();
+  } 
+  if (bajoYagudo) {
+    t.trazosNormalesP4();
+  } 
+
+  t.estadoObra();
+
+
+
+//boolean empezoElSonido = haySonido && !antesHabiaSonido;
   //boolean terminoElSonido = !haySonido && antesHabiaSonido;
 
   /*  if (empezoElSonido) {
    t.dibujar();
    }*/
-
-  /*---sonidos largos para trazos normales--- */
-  
-  if (agudoYalto) {
-    t.dibujar();
-    t.trazosNormalesP1();
-  } 
-  if (bajoYgrave) {
-    t.dibujar();
-    t.trazosNormalesP2();
-  } 
-  if (altaYgrave) {
-    t.dibujar();
-    t.trazosNormalesP3();
-  } 
-  if (bajoYagudo) {
-    t.dibujar();
-    t.trazosNormalesP4();
-  } 
-
-
-
-
-
-
 
 
 
