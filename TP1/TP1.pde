@@ -19,6 +19,7 @@ float pitch = 0;
 
 boolean antesHabiaSonido = false;
 
+PGraphics grafico;
 Trazos t;
 
 Paleta paleta;
@@ -39,9 +40,12 @@ void setup () {
   paleta = new Paleta ("roma2.jpg");
   paleta = new Paleta ("roma3.jpg");
   paleta = new Paleta ("roma4.jpg");
+  
+  grafico = createGraphics (width, height);
 }
 
 void draw () {
+  background (0);
   gestorAmp.actualizar(amp);
   gestorPitch.actualizar(pitch);
 
@@ -54,12 +58,15 @@ void draw () {
   boolean bajoYgrave = gestorAmp.filtradoNorm() > 0.1 && gestorAmp.filtradoNorm() < 0.3 ;
 
   
-
+  t.estadoObra();
+   
   /*---sonidos largos para trazos normales--- */
+  grafico.beginDraw();
+  
   if (agudoYalto) {
-    t.trazosNormalesP1();
+   t.trazosNormalesP1(grafico);
   } 
-  if (bajoYgrave) {
+   if (bajoYgrave) {
     t.trazosNormalesP2();
   } 
   if (altaYgrave) {
@@ -68,8 +75,10 @@ void draw () {
   if (bajoYagudo) {
     t.trazosNormalesP4();
   } 
-
-  t.estadoObra();
+  grafico.endDraw();
+  
+  tint (255, 100);
+  image (grafico, mouseX, mouseY);
 
 
 

@@ -1,14 +1,14 @@
 class Trazos {
   Interaccion i;
 
-  PImage trazos;
+  //PImage trazos;
   int cantidad;
   int cantTrazosLargos = 2;
   int ancho, alto;
   int opacidad;
   String estado;
   int contador;
-
+  PImage []  trazos;
   PFont tipografia;
   float x;
   float y;
@@ -23,20 +23,30 @@ class Trazos {
     estado = "inicio";
     contador =0;
     this.tipografia = loadFont("InkFree-48.vlw");
+    
+    trazos = new PImage [cantidad];
+    
+    for (int i = 0; i < cantidad; i++) {
+      String nombre = "0" + i + ".png";
+      trazos[i] = loadImage ( nombre );
+      trazos[i].filter ( INVERT );
+
+     
+    }
   }
 
   void estadoObra () {
     if (estado.equals ("inicio")) {
       contador++;
     } 
-    if (contador >=300) {
+    if (contador >=500) {
       estado = "fin";
       contador=0;
       cantidad = 0;
       firma();
     }
-    println("contador:" + contador);
     println("estado:" + estado);
+    println("contador:" + contador);
   }
 
   void firma () {
@@ -46,55 +56,51 @@ class Trazos {
     text("ROMA", 300, 500);
   }
 
-  void trazosNormalesP1 () {
+  void trazosNormalesP1 (PGraphics grafico) {
     translate (-100, -110);
-    for (int i = 0; i < cantidad; i++) {
-      String nombre = "0" + i + ".png";
-      trazos = loadImage ( nombre );
-      trazos.filter ( INVERT );
-
-      tint (paleta.darColorPaletaUno());
-      image (trazos, random (width), random (height), ancho, alto);
+   for (int i = 0; i < cantidad; i++) {
+      grafico.tint (paleta.darColorPaletaUno());
+      grafico.image (trazos[i], random (width), random (height), ancho, alto);
     }
   }
 
   void trazosNormalesP2 () {
     translate (-100, -110);
     for (int i = 0; i < cantidad; i++) {
-      String nombre = "0" + i + ".png";
+     /* String nombre = "0" + i + ".png";
       trazos = loadImage ( nombre );
-      trazos.filter ( INVERT );
+      trazos.filter ( INVERT );*/
 
       tint (paleta.darColorPaletaDos(), opacidad);
-      image (trazos, random (width), random (height), ancho, alto);
+      image (trazos[i], random (width), random (height), ancho, alto);
     }
   }
 
   void trazosNormalesP3 () {
     translate (-100, -110);
     for (int i = 0; i < cantidad; i++) {
-      String nombre = "0" + i + ".png";
+    /* String nombre = "0" + i + ".png";
       trazos = loadImage ( nombre );
-      trazos.filter ( INVERT );
+      trazos.filter ( INVERT );*/
 
       tint (paleta.darColorPaletaTres());
-      image (trazos, random (width), random (height), ancho, alto);
+      image (trazos[i], random (width), random (height), ancho, alto);
     }
   }
 
   void trazosNormalesP4 () {
     translate (-100, -110);
     for (int i = 0; i < cantidad; i++) {
-      String nombre = "0" + i + ".png";
+    /*  String nombre = "0" + i + ".png";
       trazos = loadImage ( nombre );
-      trazos.filter ( INVERT );
-
+      trazos.filter ( INVERT );*/
+      
       tint (paleta.darColorPaletaCuatro());
-      image (trazos, random (width), random (height), ancho, alto);
+      image (trazos[i], random (width), random (height), ancho, alto);
     }
   }
 
-  void trazoLargo() {
+  /*void trazoLargo() {
     int tancho = 100;
     int tlargo = 230;
     for (int i = 0; i < cantTrazosLargos; i++) {
@@ -104,5 +110,5 @@ class Trazos {
       tint (paleta.darColorPaletaUno());
       image (trazos, random (width), random (height), tancho, tlargo);
     }
-  }
+  }*/
 }
