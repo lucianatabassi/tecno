@@ -17,7 +17,7 @@ class Paleta {
     return img1.get ( x, y );
   }
   
-  color darColorPaletaDos () {
+  color darColorPaletaDos () { 
     int x = int (random (img2.width));
     int y = int (random (img2.height));
     return img2.get ( x, y );

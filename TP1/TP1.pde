@@ -16,6 +16,8 @@ boolean monitor = false;
 
 float amortiguacion = 0.9;
 
+float umbralRuido = 200;
+
 float minPitch = 61;
 float maxPitch = 96; 
 
@@ -25,19 +27,25 @@ float maxAmp = 100;
 
 float amp = 0;
 float pitch = 0;
+int ruido = 0;
 
 float umbralTiempo = 500;
+float umbralTiempo2 = 600;
 long marcaDeTiempo;
 
-PGraphics grafico;
+
 Trazos t;
 
 Paleta paleta;
+
+PGraphics grafico;
 
 void setup () {
   size (400, 600);
 
   osc = new OscP5(this, 12345);
+
+  grafico = createGraphics ( width, height );
 
   gestorAmp = new GestorSenial (minAmp, maxAmp, amortiguacion); //min y max de entrada q queremos evaluar
   gestorPitch = new GestorSenial (minPitch, maxPitch, amortiguacion);
@@ -47,12 +55,10 @@ void setup () {
   paleta = new Paleta ("roma2.jpg");
   paleta = new Paleta ("roma3.jpg");
   paleta = new Paleta ("roma4.jpg");
-
-  grafico = createGraphics (width, height);
 }
 
 void draw () {
-  // background (0);
+
   gestorAmp.actualizar(amp);
   gestorPitch.actualizar(pitch);
 
@@ -64,51 +70,59 @@ void draw () {
   /*--- aca lo que hice fue limitar el volumen y la altura (los numeros estan normalizados)*/
   boolean agudoYalto = gestorAmp.filtradoNorm() > 0.3 && gestorPitch.filtradoNorm() > 0.1;
   boolean bajoYagudo = gestorAmp.filtradoNorm() > 0.1 && gestorAmp.filtradoNorm() < 0.4 && gestorPitch.filtradoNorm() > 0.1;
-  boolean altaYgrave = gestorAmp.filtradoNorm() > 0.3 && gestorPitch.filtradoNorm() < 0.1 ;
+  boolean altaYgrave = gestorAmp.filtradoNorm() > 0.3 && gestorPitch.filtradoNorm() < 0.1;
   boolean bajoYgrave = gestorAmp.filtradoNorm() > 0.1 && gestorAmp.filtradoNorm() < 0.3 ;
 
   t.estadoObra();
 
-
   if (empezoElSonido) {
-    marcaDeTiempo = millis(); //cuanto tiempo desde que arranco el sonido
-    println ("sonido");
+    marcaDeTiempo = millis();//cuanto tiempo desde que arranco el sonido
   }
 
   /*---sonidos largos para trazos normales--- */
-  grafico.beginDraw(); 
-  if (agudoYalto) {
-    t.trazosNormalesP1();
-    println ("agudo y alto");
-  } 
-  if (bajoYgrave) {
-    t.trazosNormalesP2();
-    println ("bajo y grave");
+  if (haySonido) {
+    long momentoActual = millis ();
+    if (momentoActual > marcaDeTiempo + umbralTiempo2) {
+      if (agudoYalto) {
+        t.trazos(paleta.darColorPaletaUno(), 220, 200 );
+        println ("agudo y alto");
+      } 
+      if (bajoYgrave) {
+        t.trazoTransp(paleta.darColorPaletaDos(),  200, 300 );  //
+        println ("bajo y grave");
+      }
+      if (altaYgrave) {
+        t.trazos(paleta.darColorPaletaTres(), 190, 200);
+        println ("alto y grave");
+      } 
+      if (bajoYagudo) {
+        t.trazos(paleta.darColorPaletaCuatro(), 220, 300);
+        println ("bajo y agudo");
+      }
+    }
+
+    println ("sonido");
   }
-  if (altaYgrave) {
-    t.trazosNormalesP3();
-    println ("alto y grave");
-  } 
-  if (bajoYagudo) {
-    t.trazosNormalesP4();
-    println ("bajo y agudo");
-  } 
-  grafico.endDraw();
-
-  // tint (255, 100);
-
-  image (grafico, 0, 0);
 
   /*---sonidos cortos para trazos largos--- */
   if (terminoElSonido) {
     long momentoActual = millis();
     if ( momentoActual < marcaDeTiempo +  umbralTiempo) { // buscando sonidos cortos
-      translate (-100, -110);
-      t.trazoLargo();
-     // println ("trazo largo");
+     // grafico.beginDraw();
+      t.trazos(paleta.darColorPaletaCuatro(), 100, 220 );
+      //grafico.endDraw();
+      tint (255, 200);
+      //image (grafico, 100, 100);
+      // println ("trazo largo");
     }
-  }
 
+  }
+  
+  if(ruido > umbralRuido){
+    background(255);
+    //t.estadoObra();
+  }
+     
   if ( monitor ) {
     //muestra la señal en pantalla
     gestorAmp.imprimir( 100, 100, 400, 200);
@@ -116,13 +130,19 @@ void draw () {
   }
 
   antesHabiaSonido = haySonido;
+
 }
 
 void  oscEvent (OscMessage m) {
 
   if (m.addrPattern().equals("/amp")) {
     amp = m.get(0).floatValue();
-  } else if (m.addrPattern().equals("/pitch")) {
+  } 
+  if (m.addrPattern().equals("/pitch")) {
     pitch = m.get(0).floatValue();
+  }
+  if (m.addrPattern().equals("/ruido")) {
+
+    ruido = m.get(0).intValue();
   }
 }
