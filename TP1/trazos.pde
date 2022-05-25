@@ -27,27 +27,20 @@ class Trazos {
       trazos[i].filter ( INVERT );
     }
   }
-
-  void trazos(int tint, int ancho, int alto){ //estos valores se los paso en la clase TP1
+void trazos(int tint, int ancho, int alto, int tranps){ //estos valores se los paso en la clase TP1
+  //int transp;
    translate (-100, -110);
     for (int i = 0; i < cantidad; i++) {
-      tint (tint);
+      tint (tint,tranps );
       image (trazos[i], random (width), random (height), ancho, alto);
      }
    }
-   
-     void trazoTransp(int tint, int ancho, int alto){ //estos valores se los paso en la clase TP1
-     translate (-100, -110);
-    for (int i = 0; i < cantidad; i++) {
-      tint (tint,200);
-      image (trazos[i], random (width), random (height), ancho, alto);
-     }
-   }
+
   
    
     void firma () {
     textFont(this.tipografia);
-    fill(#70BBA4);
+    fill(#05A97A);
     textSize(30);
     text("ROMA", 300, 500);
   }
@@ -59,16 +52,41 @@ class Trazos {
       estado = "fin";
       contador=0;
       cantidad = 0;
-      cantTrazosLargos = 0;
+     // cantTrazosLargos = 0;
       firma();
-    }
+    } /*else if (estado.equals ("reinicio")){
+      reiniciarObra();
+    } */
     println("estado:" + estado);
     println("contador:" + contador);
   }
+  
+  void reiniciarObra(){
+    estado = "inicio";
+    cantidad = 5;
+    //cantTrazosLargos = 5;
+  }
+  
 }
+
    
    
    //-----------------------------LOS DEJO POR LAS DUDAS-------------------------------------------------
+     /*void trazos(int tint, int ancho, int alto){ //estos valores se los paso en la clase TP1
+   translate (-100, -110);
+    for (int i = 0; i < cantidad; i++) {
+      tint (tint);
+      image (trazos[i], random (width), random (height), ancho, alto);
+     }
+   }*/
+   
+    /* void trazoTransp(int tint, int ancho, int alto){ //estos valores se los paso en la clase TP1
+     translate (-100, -110);
+    for (int i = 0; i < cantidad; i++) {
+      tint (tint,200);
+      image (trazos[i], random (width), random (height), ancho, alto);
+     }
+   }*/
     /*void trazoLargo() {
     int tancho = 100;
     int tlargo = 230;

@@ -16,7 +16,8 @@ boolean monitor = false;
 
 float amortiguacion = 0.9;
 
-float umbralRuido = 200;
+float umbralRuidoMin = 300;
+float umbralRuidoMax = 400;
 
 float minPitch = 61;
 float maxPitch = 96; 
@@ -38,14 +39,14 @@ Trazos t;
 
 Paleta paleta;
 
-PGraphics grafico;
+//PGraphics grafico;
 
 void setup () {
   size (400, 600);
 
   osc = new OscP5(this, 12345);
 
-  grafico = createGraphics ( width, height );
+ // grafico = createGraphics ( width, height );
 
   gestorAmp = new GestorSenial (minAmp, maxAmp, amortiguacion); //min y max de entrada q queremos evaluar
   gestorPitch = new GestorSenial (minPitch, maxPitch, amortiguacion);
@@ -84,19 +85,19 @@ void draw () {
     long momentoActual = millis ();
     if (momentoActual > marcaDeTiempo + umbralTiempo2) {
       if (agudoYalto) {
-        t.trazos(paleta.darColorPaletaUno(), 220, 200 );
+        t.trazos(paleta.darColorPaletaUno(), 220, 200, 255 );
         println ("agudo y alto");
       } 
       if (bajoYgrave) {
-        t.trazoTransp(paleta.darColorPaletaDos(),  200, 300 );  //
+         t.trazos(paleta.darColorPaletaDos(),  200, 300, 200 );  //
         println ("bajo y grave");
       }
       if (altaYgrave) {
-        t.trazos(paleta.darColorPaletaTres(), 190, 200);
+        t.trazos(paleta.darColorPaletaTres(), 190, 200, 255);
         println ("alto y grave");
       } 
       if (bajoYagudo) {
-        t.trazos(paleta.darColorPaletaCuatro(), 220, 300);
+        t.trazos(paleta.darColorPaletaCuatro(), 220, 300, 255);
         println ("bajo y agudo");
       }
     }
@@ -108,19 +109,15 @@ void draw () {
   if (terminoElSonido) {
     long momentoActual = millis();
     if ( momentoActual < marcaDeTiempo +  umbralTiempo) { // buscando sonidos cortos
-     // grafico.beginDraw();
-      t.trazos(paleta.darColorPaletaCuatro(), 100, 220 );
-      //grafico.endDraw();
-      tint (255, 200);
-      //image (grafico, 100, 100);
-      // println ("trazo largo");
+      t.trazos(paleta.darColorPaletaCuatro(), 100, 220, 255);
     }
 
   }
   
-  if(ruido > umbralRuido){
-    background(255);
+  if(ruido > umbralRuidoMin && ruido < umbralRuidoMax){
+    background(200);
     //t.estadoObra();
+    t.reiniciarObra();
   }
      
   if ( monitor ) {
