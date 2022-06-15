@@ -39,23 +39,17 @@ Trazos t;
 
 Paleta paleta;
 
-//PGraphics grafico;
 
 void setup () {
   size (400, 600);
 
   osc = new OscP5(this, 12345);
 
- // grafico = createGraphics ( width, height );
-
   gestorAmp = new GestorSenial (minAmp, maxAmp, amortiguacion); //min y max de entrada q queremos evaluar
   gestorPitch = new GestorSenial (minPitch, maxPitch, amortiguacion);
 
   t = new Trazos();
-  paleta = new Paleta ("roma1.jpg");
-  paleta = new Paleta ("roma2.jpg");
-  paleta = new Paleta ("roma3.jpg");
-  paleta = new Paleta ("roma4.jpg");
+  paleta = new Paleta ();
 }
 
 void draw () {
@@ -68,14 +62,13 @@ void draw () {
   empezoElSonido = !antesHabiaSonido && haySonido;
   terminoElSonido = antesHabiaSonido && !haySonido;
 
-  /*--- aca lo que hice fue limitar el volumen y la altura (los numeros estan normalizados)*/
   boolean agudoYalto = gestorAmp.filtradoNorm() > 0.3 && gestorPitch.filtradoNorm() > 0.1;
   boolean bajoYagudo = gestorAmp.filtradoNorm() > 0.1 && gestorAmp.filtradoNorm() < 0.4 && gestorPitch.filtradoNorm() > 0.1;
   boolean altaYgrave = gestorAmp.filtradoNorm() > 0.3 && gestorPitch.filtradoNorm() < 0.1;
   boolean bajoYgrave = gestorAmp.filtradoNorm() > 0.1 && gestorAmp.filtradoNorm() < 0.3 ;
 
   t.estadoObra();
-
+t.trazos(paleta.darColorPaletaUno(), 220, 200, 255 );
   if (empezoElSonido) {
     marcaDeTiempo = millis();//cuanto tiempo desde que arranco el sonido
   }
@@ -89,7 +82,7 @@ void draw () {
         println ("agudo y alto");
       } 
       if (bajoYgrave) {
-         t.trazos(paleta.darColorPaletaDos(),  200, 300, 200 );  //
+         t.trazos(paleta.darColorPaletaDos(),  200, 300, 200 );  
         println ("bajo y grave");
       }
       if (altaYgrave) {
@@ -116,7 +109,6 @@ void draw () {
   
   if(ruido > umbralRuidoMin && ruido < umbralRuidoMax){
     background(200);
-    //t.estadoObra();
     t.reiniciarObra();
   }
      

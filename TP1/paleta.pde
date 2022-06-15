@@ -2,12 +2,12 @@ class Paleta {
 
   PImage img1, img2, img3, img4;
 
-  Paleta ( String NombrePaleta ) {
 
-    img1 = loadImage (NombrePaleta);
-    img2 = loadImage (NombrePaleta);
-    img3 = loadImage (NombrePaleta);
-    img4 = loadImage (NombrePaleta);
+  Paleta (  ) {
+    img1 = loadImage ("roma1.jpg");
+    img2 = loadImage ("roma2.jpg");
+    img3 = loadImage ("roma3.jpg");
+    img4 = loadImage ("roma4.jpg");
   }
 
 
@@ -24,7 +24,7 @@ class Paleta {
   }
   
   color darColorPaletaTres () {
-    int x = int (random (img3.width));
+   int x = int (random (img3.width));
     int y = int (random (img3.height));
     return img3.get ( x, y );
   }
