@@ -68,7 +68,6 @@ void draw () {
   boolean bajoYgrave = gestorAmp.filtradoNorm() > 0.1 && gestorAmp.filtradoNorm() < 0.3 ;
 
   t.estadoObra();
-t.trazos(paleta.darColorPaletaUno(), 220, 200, 255 );
   if (empezoElSonido) {
     marcaDeTiempo = millis();//cuanto tiempo desde que arranco el sonido
   }

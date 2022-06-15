@@ -16,7 +16,6 @@ class Trazos {
     contador = 0;
     this.tipografia = loadFont("InkFree-48.vlw");
 
-    //trazos = new PImage [cantidad];
 
     for (int i = 0; i < cantidad; i++) {
       String nombre = "0" + i + ".png";
